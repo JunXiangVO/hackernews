@@ -51,31 +51,14 @@ class App extends Component {
     };
 
   render() {
-    
+    const{searchTerm, list}=this.state;
     return (
       <div className="App">
         <div className="App-header"> 
 
-        <form> <input type="text" onChange={this.onSearchChange}/> </form>
-
-          {this.state.list.filter(isSearched(this.state.searchTerm)).map(item=>{
-            return (
-              <div key={item.objectID}>
-                <span> <a href={item.url}>{item.title}</a> </span><br />
-                <span>{item.author}</span> 
-                <span>{item.points}</span>
-                
-                <span>
-                  <button
-                  onClick={() => this.onDismiss(item.objectID)}
-                  type="button"
-                  >
-                  Dismiss
-                  </button>
-                </span>
-              </div>
-            )
-          })}
+        <Search value={searchTerm} onChange={this.onSearchChange} />
+        <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} />
+          
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
@@ -84,5 +67,39 @@ class App extends Component {
     );
   }
 }
+
+class Search extends Component {
+  render() {
+    const{value, onChange}=this.props;
+    return (
+      <form> <input type="text" value={value} onChange={onChange} /> </form>
+    )
+  }
+}
+
+class Table extends Component {
+  render(){
+    const {list, pattern, onDismiss} = this.props;
+      return (
+        <div>
+          {
+            list.filter(isSearched(pattern)).map(
+              item=>
+                <div key={item.objectID}>
+                  <span> <a href={item.url}>{item.title}</a> </span><br />
+                  <span>{item.author}</span> 
+                  <span>{item.points}</span>
+                  
+                  <span>
+                    <button onClick={() => onDismiss(item.objectID)} type="button">Dismiss</button>
+                  </span>
+                </div>
+            )
+          }        
+        </div> 
+      );
+    }
+  }
+
 
 export default App;
