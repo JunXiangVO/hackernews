@@ -60,9 +60,12 @@ class App extends Component {
 /*     function isNotID(item) {return item.objectID!==id;} */
     /* const isNotId = item => item.objectID !== id;
     const updatedList = this.state.list.filter(isNotId); */
+/*      this.setState({result:updatedHits});  */
 
-    const updatedList = this.state.list.filter(item => item.objectID !== id);
-    this.setState({list:updatedList});
+    const updatedHits = this.state.result.hits.filter(item => item.objectID !== id);
+     /* this.setState({result:Object.assign({}, this.state.result, {hits:updatedHits})}); //also works */
+     this.setState({ result: { ...this.state.result, hits: updatedHits }}); //spread operator
+
   };
 
   onSearchChange(event) {
